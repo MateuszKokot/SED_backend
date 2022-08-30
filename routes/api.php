@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,16 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
+//Auth::guard('api')->check();
+
 Route::middleware(['cors'])->group(function () {
+
     Route::post("/login", [\App\Http\Controllers\API\LoginController::class, 'store']);
+
 });
+
+Route::middleware(['cors','auth:api'])->group(function () {
+    Route::get("/test", [\App\Http\Controllers\API\LoginController::class, 'index']);
+});
+
+
