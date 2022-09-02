@@ -21,14 +21,12 @@ use Illuminate\Support\Facades\Route;
 
 //Auth::guard('api')->check();
 
-Route::middleware(['cors'])->group(function () {
+Route::post("/login", \App\Http\Controllers\API\LoginController::class);
 
-    Route::post("/login", [\App\Http\Controllers\API\LoginController::class, 'store']);
 
-});
+Route::middleware(['auth:api'])->group(function () {
+    Route::get("/test", \App\Http\Controllers\API\TestController::class);
 
-Route::middleware(['cors','auth:api'])->group(function () {
-    Route::get("/test", [\App\Http\Controllers\API\LoginController::class, 'index']);
 });
 
 
