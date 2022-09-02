@@ -15,15 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
-//Auth::guard('api')->check();
-
+// Trasa logowani, która oddaje Passport Token jako ciasteczko o nazwie 'access_token'
 Route::post("/login", \App\Http\Controllers\API\LoginController::class);
 
-
+/*
+| Wszystkie trasy w tej grupie będą sprawdzane czy mają w żądaniu
+| HEADER 'Authorization' zawierający token passport. Token ten jest oddawany
+| po zalogowaniu jako ciasteczko i ma swoją żywotność.
+| (1 tydzień i odświeża się po ponownym logowaniu)
+| Jest przechowywany w przeglądarce i musi być dodany po stronie klienta
+| do każdego żądania.
+*/
 Route::middleware(['auth:api'])->group(function () {
     Route::get("/test", \App\Http\Controllers\API\TestController::class);
 
