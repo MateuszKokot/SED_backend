@@ -28,7 +28,7 @@ Route::post("/login", \App\Http\Controllers\API\LoginController::class);
 */
 Route::middleware(['auth:api'])->group(function () {
     Route::get("/test", \App\Http\Controllers\API\TestController::class);
-
+    Route::get('/keyword',\App\Http\Controllers\API\KeyWordController::class);
 });
 
 
