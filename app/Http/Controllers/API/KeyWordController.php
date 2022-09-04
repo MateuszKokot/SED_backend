@@ -27,11 +27,17 @@ class KeyWordController extends Controller
         // Match word with keyword and add it to associative Array
         foreach ($words as $word){
             if ($word == "") {continue;}
-            $keyWord = KeyWord::where('word', $word)->first('keyword');
+            $keyWord = KeyWord::where('word', $word)->first();
             if ($keyWord == null){
+
                 $pairsOfWordAndKeywords[$word] = null;
             } else {
+                // Add a pair of words to array
                 $pairsOfWordAndKeywords[$word] = $keyWord['keyword'];
+                // Increment popularityOfKeyword for keyword in DB
+                $popularityOfKeyword = 1 + intval($keyWord['popularityOfKeyword']);
+                KeyWord::where('keyword', $keyWord['keyword'])
+                    ->update(['popularityOfKeyword' => strval($popularityOfKeyword)]);
             }
         }
         return $pairsOfWordAndKeywords;
