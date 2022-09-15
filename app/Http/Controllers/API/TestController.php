@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Word;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cookie;
@@ -31,6 +32,9 @@ class TestController extends Controller
         } else {
             $content = $mytime->toDateTimeString() . " - Nie ma hedera";
         }
+
+        Word::where('id', 1)
+            ->update(['updated_at' => "1111-11-11 11:11:11"]);
 
 
         return response($content);

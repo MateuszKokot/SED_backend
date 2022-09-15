@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('word');
             $table->unsignedBigInteger('keyword_id');
             $table->foreign('keyword_id')->references('id')->on('key_words');
+            $table->unsignedBigInteger('popularity');
             $table->timestamps();
         });
     }

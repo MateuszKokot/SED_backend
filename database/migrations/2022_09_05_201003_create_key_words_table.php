@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('key_words', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary();
             $table->string('keyword');
+            $table->unsignedBigInteger('popularity');
             $table->timestamps();
         });
     }
