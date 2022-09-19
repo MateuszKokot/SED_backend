@@ -1,0 +1,143 @@
+
+          _____ _____   _____        _           _____ _               _
+    /\   |  __ \_   _| |  __ \      | |         / ____| |             | |
+   /  \  | |__) || |   | |  | | __ _| |_ __ _  | (___ | |__   ___  ___| |_
+  / /\ \ |  ___/ | |   | |  | |/ _` | __/ _` |  \___ \| '_ \ / _ \/ _ \ __|
+ / ____ \| |    _| |_  | |__| | (_| | || (_| |  ____) | | | |  __/  __/ |_
+/_/    \_\_|   |_____| |_____/ \__,_|\__\__,_| |_____/|_| |_|\___|\___|\__|
+
+
+
+[../api/template]_____________________________________________________________________________________________
+|---# [POST]
+|       # [HEADERS]
+|            - "name": "value"
+|       # [BODY]
+|            - empty
+|       # [RESPONSE]
+|            #[Response HEADERS]
+|                - "name": "value"
+|            #[Response COOKIE]
+|                - "name": "value"
+|                [EXTRA_INFO] - blok jakiegoś dodatkowego ważnego info do danej sekcji
+|            #[Response BODY]
+|                {
+|                access_token
+|                }
+|                [EXTRA_INFO] - Przykładowe nie "empty" body = Obecnie przesyłany jest tylko access
+|                               token wystawiany przez API w celu potwierdzenia poprawności logowania.
+|                               TODO - jest to do poprawienia na cos bardziej sensownego np.
+|                               Firebase userID.
+|
+|---# [GET]
+|       # [HEADERS]
+|       # [BODY]
+|       # [RESPONSE]
+|            #[Response HEADERS]
+|            #[Response COOKIE]
+|            #[Response BODY]
+|
+|---# [DELETE]
+|       # [HEADERS]
+|       # [BODY]
+|       # [RESPONSE]
+|            #[Response HEADERS]
+|            #[Response COOKIE]
+|            #[Response BODY]
+|__________________________________________________________________________________________________________
+
+
+
+
+[../api/login]_____________________________________________________________________________________________
+|    # [POST]
+|       # [HEADERS]
+|            - "Content-Type": "application/json"
+|            - "idToken": "string x"
+|                x = idToken pobrany z obiektu usera przesłanego przez firebase
+|
+|       # [BODY]
+|            - empty|
+|       # [RESPONSE]
+|            #[Response HEADERS]
+|                - empty
+|            #[Response COOKIE]
+|                - "id": "x"
+|                        x = id usera utworzonego w bazie danych API w Laravelu
+|
+|                - "access_token": "a"
+|                        a = token dostępowy wystawiony przez API niezbędny do dalszej komunikacji na
+|                            innych endpointach.
+|
+|                - "token_type": "t"
+|                        t = Typ tokenu wystawionego przez API. Obecnie jedyny typ to "Bearer"
+|
+|                - "expires_at": "e"
+|                        e = data ważności tokenu oraz ciasteczek cookie przesłąnych w tym zapytaniu.
+|                           Obecnie ustawiona na 1 tydzień.
+|
+|                [EXTRA_INFO] - cookie mają ustawiony datę ważności taką jak token dostępowy do API.
+|                               Czas ważności podany jest w cookie "expires_at"
+|
+|            #[Response BODY]
+|                {
+|                access_token
+|                }
+|                [EXTRA_INFO] - Obecnie przesyłany jest tylko access token wystawiany przez API
+|                               W celu potwierdzenia poprawności logowania.
+|                               TODO - jest to do poprawienia na cos bardziej sensownego np.
+|                               Firebase userID.
+|__________________________________________________________________________________________________________
+
+
+
+[../api/keyword]_____________________________________________________________________________________________
+|---# [GET]
+|       # [HEADERS]
+|           - "Content-Type": "application/json"
+|           - "Accept": "application/json"
+|           - "Authorization": "x y"
+|                x = Jest to cookie "token_type" przekazywane w odpowiedzi na endpoint '/api/login'
+|                y = Jest to cookie "access_token" przekazywane w odpowiedzi na endpoint '/api/login'
+|                [EXTRA_INFO] = między zmiennymi x i y występuje pojedyńcza spacja
+|       # [BODY]
+|            {
+|            "inputString": "Szukam ekipy do grania w piłkę"
+|            }
+|            [EXTRA_INFO] - Wartość inputStringa to wartość z formularza wyszukiwania wpisanego przez usera
+|                           po stronie klienta przeglądarki.
+|       # [RESPONSE]
+|            #[Response HEADERS]
+|                - "name": "value"
+|            #[Response COOKIE]
+|                - "name": "value"
+|                [EXTRA_INFO] - blok jakiegoś dodatkowego ważnego info do danej sekcji
+|            #[Response BODY]
+|                - empty
+|
+|
+|---# [POST]
+|       # [HEADERS]
+|       # [BODY]
+|       # [RESPONSE]
+|            #[Response HEADERS]
+|            #[Response COOKIE]
+|            #[Response BODY]
+|
+|---# [PUT]
+|       # [HEADERS]
+|       # [BODY]
+|       # [RESPONSE]
+|            #[Response HEADERS]
+|            #[Response COOKIE]
+|            #[Response BODY]
+|
+|---# [DELETE]
+|       # [HEADERS]
+|       # [BODY]
+|       # [RESPONSE]
+|            #[Response HEADERS]
+|            #[Response COOKIE]
+|            #[Response BODY]
+|__________________________________________________________________________________________________________
+
