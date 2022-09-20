@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\KeyWord;
 use App\Models\Member;
 use App\Models\Tag;
+use App\Models\User;
 use App\Models\Word;
 use Illuminate\Http\Request;
 
@@ -46,7 +47,7 @@ class GroupController extends Controller
             $newMembers = new Member();
             $newMembers->group_id = $newGroup->id;
             $newMembers->user_id = $member;
-            $membersForContent[] =
+            $membersForContent[] = User::where('id',$member)->get()[0];
             $newMembers->save();
         }
 
@@ -64,7 +65,7 @@ class GroupController extends Controller
 
         $content['group'] = Group::where('id', $newGroup->id)->get();
         $content['keywords'] = $keywordsForContent;
-        $content['members'] = "members"; //TODO dorobić zwracanie membersów
+        $content['members'] = $membersForContent;
         return response($content);
     }
 
@@ -76,7 +77,24 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        return "show";
+        // Pobieranie grupy
+        $content['group'] = Group::where('id', $id)->get();
+
+        // Pobieranie tagów grupy
+        $tags = Tag::where('group_id', $id)->get();
+        foreach ($tags as $tag) {
+            $keyword[] = KeyWord::where('id', $tag->keyword_id)->value('keyword');
+        }
+        $content['keywords'] = $keyword;
+
+        //Pobieranie memberów grupy
+        $members = Member::where('group_id', $id)->get();
+        foreach ($members as $member){
+            $membersForContent[] = User::where('id', $member->user_id)->get()[0];
+        }
+        $content['members'] = $membersForContent;
+
+        return response($content);
     }
 
     /**
@@ -99,6 +117,14 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        return "destory";
+        Member::where('group_id', $id)->delete();
+        Tag::where('group_id', $id)->delete();
+        $deleted = Group::where('id', $id)->delete();
+        if ( $deleted == 1 ) {
+            $content = "deleted";
+        } else {
+            $content = "undeleted or not existing";
+        }
+        return response($content);
     }
 }
