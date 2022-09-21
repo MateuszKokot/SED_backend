@@ -20,7 +20,8 @@ class GroupController extends Controller
      */
     public function index()
     {
-        return "index";
+        $content = "Use searching engine end point to get a group";
+        return response($content);
     }
 
     /**
@@ -39,6 +40,7 @@ class GroupController extends Controller
         $newGroup->coordinates = $request->coordinates;
         $newGroup->date = $request->date;
         $newGroup->max_members = $request->max_members;
+        $newGroup->owner = $request->owner;
         $newGroup->save();
 
         // Tworzenie memberów grupy
@@ -106,7 +108,15 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return "update";
+        $user = User::where('firebase_uid', $request->header('firebase_uid'))->get();
+        $group = Group::where('id', $id)->get();
+        if (isset($user) && $user[0]->id == $group[0]->owner){
+            Group::where('id', $id)->update($request->toArray());
+            $content = Group::where('id', $id)->get();
+        } else {
+            $content = "You are not Owner of this group";
+        }
+        return response($content);
     }
 
     /**
@@ -117,6 +127,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
+
         Member::where('group_id', $id)->delete();
         Tag::where('group_id', $id)->delete();
         $deleted = Group::where('id', $id)->delete();

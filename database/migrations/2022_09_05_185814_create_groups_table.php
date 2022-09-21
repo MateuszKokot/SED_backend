@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('coordinates', 100); // Example from Google Maps: 52.40117371024606, 16.91741090208518
             $table->string('date', 100);
             $table->integer('max_members');
+            $table->unsignedBigInteger('owner');
+            $table->foreign('owner')->references('id')->on('users');
             $table->timestamps();
         });
     }
