@@ -56,7 +56,7 @@ class LoginController extends Controller
             ['firebase_uid' => $uid],
             ['name' => $name,
                 'email' => $email,
-                'password' => "123456"]
+                'popularity'=> 0 ]
         );
 
 

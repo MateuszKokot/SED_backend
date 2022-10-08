@@ -18,11 +18,14 @@ return new class extends Migration
             $table->string('firebase_chat_id', 50);
             $table->string('name', 300);
             $table->string('description', 9999);
-            $table->string('coordinates', 100); // Example from Google Maps: 52.40117371024606, 16.91741090208518
-            $table->string('date', 100);
+            $table->float('latitude',14,14);
+            $table->float('longitude',14,14);// Example from Google Maps: 52.40117371024606, 16.91741090208518
+            $table->date('event_date');
+            $table->time('event_time',0);
             $table->integer('max_members');
             $table->unsignedBigInteger('owner');
             $table->foreign('owner')->references('id')->on('users');
+            $table->unsignedBigInteger('popularity');
             $table->timestamps();
         });
     }

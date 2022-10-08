@@ -37,10 +37,13 @@ class GroupController extends Controller
         $newGroup->firebase_chat_id = $request->firebase_chat_id;
         $newGroup->name = $request->name;
         $newGroup->description = $request->description;
-        $newGroup->coordinates = $request->coordinates;
+        $newGroup->latitude = $request->latitude;
+        $newGroup->longitude = $request->longitude;
         $newGroup->date = $request->date;
+        $newGroup->time = $request->time;
         $newGroup->max_members = $request->max_members;
         $newGroup->owner = $request->owner;
+        $newGroup->popularity = 0;
         $newGroup->save();
 
         // Tworzenie memberów grupy
