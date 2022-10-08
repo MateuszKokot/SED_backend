@@ -17,6 +17,9 @@ class AddCORSHeaderToRespons
     public function handle(Request $request, Closure $next)
     {
         error_log('AddCORSHeaderToRespons',0);
-        return $next($request)->header('Access-Control-Allow-Origin', '*');
+        return $next($request)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Credentials', 'true')
+            ->header('Access-Control-Allow-Headers', '*');
     }
 }

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('max_members');
             $table->unsignedBigInteger('owner');
             $table->foreign('owner')->references('id')->on('users');
-            $table->unsignedBigInteger('popularity');
+            $table->unsignedBigInteger('popularity')->default(0);
             $table->timestamps();
         });
     }
