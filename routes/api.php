@@ -26,8 +26,9 @@ Route::post("/login", \App\Http\Controllers\API\LoginController::class);
 | Jest przechowywany w przeglądarce i musi być dodany po stronie klienta
 | do każdego żądania.
 */
-Route::middleware(['auth:api'])->group(function () {
     Route::get("/test", \App\Http\Controllers\API\TestController::class);
+
+Route::middleware(['auth:api'])->group(function () {
     Route::get('/keyword',\App\Http\Controllers\API\KeyWordController::class);
     Route::apiResource('group', \App\Http\Controllers\API\GroupController::class);
 });

@@ -84,17 +84,17 @@ class LoginController extends Controller
 //            )->toDateTimeString()
 //        ]);
 
-        $content = $tokenResult->accessToken;
+//        $content = $tokenResult->accessToken;
         $startTime = Carbon::now();
         $finishTime = Carbon::parse($tokenResult->token->expires_at);
         $minutesBetwen = $finishTime->diffInMinutes($startTime);
         $cookieExpires = $minutesBetwen;
-
-        return response($content)
-            ->cookie('id', $user->id, $cookieExpires)
-            ->cookie('access_token', $tokenResult->accessToken, $cookieExpires)
-            ->cookie('token_type', 'Bearer', $cookieExpires)
-            ->cookie('expires_at', $finishTime->toDateTimeString(), $cookieExpires);
+        $content = [
+            'id' => $user->id,
+            'Authorization' => 'Bearer ' . $tokenResult->accessToken,
+            'expires_at' => $finishTime->toDateTimeString()
+        ];
+        return response($content);
 
     }
 }
