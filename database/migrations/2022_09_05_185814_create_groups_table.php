@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('firebase_chat_id', 50);
             $table->string('name', 300);
             $table->string('description', 9999);
-            $table->double('latitude',16,14);
-            $table->double('longitude',16,14);// Example from Google Maps: 52.40117371024606, 16.91741090208518
+            $table->float('latitude',17,14);
+            $table->float('longitude',17,14);// Example from Google Maps: 52.40117371024606, 16.91741090208518
             $table->date('event_date');
             $table->time('event_time',0);
             $table->integer('max_members');
