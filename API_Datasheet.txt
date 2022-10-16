@@ -62,37 +62,26 @@
 |            #[Response HEADERS]
 |                - empty
 |            #[Response COOKIE]
+|                -empty
+|            #[Response BODY]
+|                {
 |                - "id": "x"
 |                        x = id usera utworzonego w bazie danych API w Laravelu
 |
-|                - "access_token": "a"
+|                - Authorization": "a"
 |                        a = token dostępowy wystawiony przez API niezbędny do dalszej komunikacji na
 |                            innych endpointach.
 |
-|                - "token_type": "t"
-|                        t = Typ tokenu wystawionego przez API. Obecnie jedyny typ to "Bearer"
-|
 |                - "expires_at": "e"
-|                        e = data ważności tokenu oraz ciasteczek cookie przesłąnych w tym zapytaniu.
+|                        e = data ważności tokenu. Należy ustawić taką samą ważność ciasteczka.
 |                           Obecnie ustawiona na 1 tydzień.
-|
-|                [EXTRA_INFO] - cookie mają ustawiony datę ważności taką jak token dostępowy do API.
-|                               Czas ważności podany jest w cookie "expires_at"
-|
-|            #[Response BODY]
-|                {
-|                access_token
 |                }
-|                [EXTRA_INFO] - Obecnie przesyłany jest tylko access token wystawiany przez API
-|                               W celu potwierdzenia poprawności logowania.
-|                               TODO - jest to do poprawienia na cos bardziej sensownego np.
-|                               Firebase userID.
 |__________________________________________________________________________________________________________
 
 
 
 [../api/keyword]_____________________________________________________________________________________________
-|---# [GET]
+|---# [POST]
 |       # [HEADERS]
 |           - "Content-Type": "application/json"
 |           - "Accept": "application/json"
@@ -113,31 +102,6 @@
 |                - "name": "value"
 |                [EXTRA_INFO] - blok jakiegoś dodatkowego ważnego info do danej sekcji
 |            #[Response BODY]
-|                - empty
-|
-|
-|---# [POST]
-|       # [HEADERS]
-|       # [BODY]
-|       # [RESPONSE]
-|            #[Response HEADERS]
-|            #[Response COOKIE]
-|            #[Response BODY]
-|
-|---# [PUT]
-|       # [HEADERS]
-|       # [BODY]
-|       # [RESPONSE]
-|            #[Response HEADERS]
-|            #[Response COOKIE]
-|            #[Response BODY]
-|
-|---# [DELETE]
-|       # [HEADERS]
-|       # [BODY]
-|       # [RESPONSE]
-|            #[Response HEADERS]
-|            #[Response COOKIE]
-|            #[Response BODY]
+|                - tablica keywordsów
 |__________________________________________________________________________________________________________
 

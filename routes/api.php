@@ -29,7 +29,7 @@ Route::post("/login", \App\Http\Controllers\API\LoginController::class);
     Route::get("/test", \App\Http\Controllers\API\TestController::class);
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::get('/keyword',\App\Http\Controllers\API\KeyWordController::class);
+    Route::post('/keyword',\App\Http\Controllers\API\KeyWordController::class);
     Route::apiResource('group', \App\Http\Controllers\API\GroupController::class);
 });
 
