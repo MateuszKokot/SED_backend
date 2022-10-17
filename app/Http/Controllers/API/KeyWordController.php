@@ -38,8 +38,12 @@ class KeyWordController extends Controller
                 if ($wordRowFromDB == null){
                     $pairsOfWordAndKeywords[$word] = null;
                 } else {
-                    // Add a pair of words to array
-                    $pairsOfWordAndKeywords[$word] = KeyWord::where('id', $wordRowFromDB['keyword_id'])->value('keyword');
+                    // Add a pair of word, keyword, idKeyword to array
+                    $pairsOfWordAndKeywords[$word] =
+                        [
+                        KeyWord::where('id', $wordRowFromDB['keyword_id'])->value('keyword'),
+                        $wordRowFromDB['keyword_id']
+                        ];
                     // Increment popularity for keyword and word in DB
                     $popularityOfKeyword = 1 + KeyWord::where('id', $wordRowFromDB['keyword_id'])->value('popularity');
                     $popularityOfWord = 1 + intval($wordRowFromDB['popularity']);
