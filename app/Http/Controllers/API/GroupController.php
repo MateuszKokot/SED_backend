@@ -39,8 +39,8 @@ class GroupController extends Controller
         $newGroup->description = $request->description;
         $newGroup->latitude = $request->latitude;
         $newGroup->longitude = $request->longitude;
-        $newGroup->date = $request->date;
-        $newGroup->time = $request->time;
+        $newGroup->event_date = $request->event_date;
+        $newGroup->event_time = $request->event_time;
         $newGroup->max_members = $request->max_members;
         $newGroup->owner = $request->owner;
         $newGroup->popularity = 0;
@@ -130,7 +130,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-
+        // TODO dodaj zabezpieczneie żeby tylko owner mógł usunąć grupe
         Member::where('group_id', $id)->delete();
         Tag::where('group_id', $id)->delete();
         $deleted = Group::where('id', $id)->delete();

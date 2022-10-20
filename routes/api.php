@@ -31,6 +31,9 @@ Route::post("/login", \App\Http\Controllers\API\LoginController::class);
 Route::middleware(['auth:api'])->group(function () {
     Route::post('/keyword',\App\Http\Controllers\API\KeyWordController::class);
     Route::apiResource('group', \App\Http\Controllers\API\GroupController::class);
+    Route::prefix('attend')->group(function () {
+        Route::get('/user/{user_id}', [\App\Http\Controllers\API\AttendController::class, 'whereIAttend']);
+    });
 });
 
 
