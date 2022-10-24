@@ -90,14 +90,14 @@ class GroupController extends Controller
         foreach ($tags as $tag) {
             $keyword[] = KeyWord::where('id', $tag->keyword_id)->value('keyword');
         }
-        $content['keywords'] = $keyword;
+        $content['group'][0]['keywords'] = $keyword;
 
         //Pobieranie memberów grupy
         $members = Member::where('group_id', $id)->get();
         foreach ($members as $member){
             $membersForContent[] = User::where('id', $member->user_id)->get()[0];
         }
-        $content['members'] = $membersForContent;
+        $content['group'][0]['members'] = $membersForContent;
 
         return response($content);
     }
