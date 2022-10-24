@@ -42,7 +42,7 @@ class MemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      */
-    public function update(Request $request, $id) //PATCH
+    public function update(Request $request, $id) //PATCH/{id}
     {
         //
     }
@@ -52,7 +52,7 @@ class MemberController extends Controller
      *
      * @param  int  $id
      */
-    public function destroy( $id) //DELETE/{ID_GUPRY}
+    public function destroy($id) //DELETE/{ID_GUPRY}
     {
         //
     }

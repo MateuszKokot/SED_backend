@@ -18,6 +18,8 @@ class AttendController extends Controller
 
         // Pobieram grupy gdzie user występuje jako member
         foreach ($members as $key=>$member){
+            // Zmienne lokalne dla pętli
+            $membersForContent = null;
 
             // Pobieranie grupy
             $content[$key] = (Group::where('id', $member->group_id)->get())[0];
@@ -34,8 +36,8 @@ class AttendController extends Controller
             foreach ($membersAttendedInGroup as $mbr){
                 $membersForContent[] = User::where('id', $mbr->user_id)->get()[0];
             }
-
             $content[$key]['members'] = $membersForContent;
+
         }
         return response($content);
     }
