@@ -26,7 +26,10 @@ Route::post("/login", \App\Http\Controllers\API\LoginController::class);
 | Jest przechowywany w przeglądarce i musi być dodany po stronie klienta
 | do każdego żądania.
 */
-    Route::get("/test", \App\Http\Controllers\API\TestController::class);
+
+Route::get("/test", \App\Http\Controllers\API\TestController::class);
+
+
 
 Route::middleware(['auth:api'])->group(function () {
     Route::post('/keyword',\App\Http\Controllers\API\KeyWordController::class);
@@ -35,6 +38,8 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/user/{user_id}', [\App\Http\Controllers\API\AttendController::class, 'whereIAttend']);
     });
     Route::get('/showResults', [\App\Http\Controllers\API\ShowResultsController::class, 'whereIAttend']);
-});
+    Route::post('/member/create', [\App\Http\Controllers\API\MemberController::class,'store']);
+    Route::delete('/member/delete', [\App\Http\Controllers\API\MemberController::class,'destroy']);
 
+});
 
