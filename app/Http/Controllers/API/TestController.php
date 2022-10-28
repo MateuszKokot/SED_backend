@@ -7,6 +7,7 @@ use App\Models\Word;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cookie;
+use function MongoDB\BSON\toJSON;
 
 class TestController extends Controller
 {
@@ -18,21 +19,23 @@ class TestController extends Controller
      */
     public function __invoke(Request $request)
     {
-        error_log('TestController',0);
-//        error_log('COOKIE: ' . $request->cookie('id') ,0);
-//        foreach ($info as $value) {
-//            error_log( "HEADER: " . implode(" ",$value),0);
-//        }
+        $auth = app('firebase.auth');
+//
+//        $userProperties = [
+//            'email' => 'testZakladaniaUsera@zPoziomuBackendu.com',
+//            'emailVerified' => false,
+//            'phoneNumber' => '+15555550100',
+//            'password' => 'secretPassword',
+//            'displayName' => 'John Doe',
+//            'photoUrl' => 'http://www.example.com/12345678/photo.png',
+//            'disabled' => false,
+//        ];
+//
+//        $createdUser = $auth->createUser($userProperties);
 
+        $users = $auth->getUserByEmail('testZakladaniaUsera@zPoziomuBackendu.com');
 
-        $mytime = Carbon::now();
-
-        if ($request->hasHeader('id')){
-            $content = $mytime->toDateTimeString() . " - Ma heder";
-        } else {
-            $content = $mytime->toDateTimeString() . " - Nie ma hedera";
-        }
-
-        return response($content);
+        $content = $users->uid;
+        return response($users);
     }
 }

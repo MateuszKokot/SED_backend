@@ -17,12 +17,35 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+
+        $email = fake()->email;
+        $phoneNumber = fake()->e164PhoneNumber;
+        $displayName = fake()->name;
+
+
+        $auth = app('firebase.auth');
+
+        $userProperties = [
+            'email' => $email,
+            'emailVerified' => false,
+            'phoneNumber' => $phoneNumber,
+            'password' => 'zaq1@WSX',
+            'displayName' => $displayName,
+            'photoUrl' => 'http://www.example.com/12345678/photo.png',
+            'disabled' => false,
+        ];
+
+        $createdUser = $auth->createUser($userProperties);
+        $user = $auth->getUserByEmail($email);
+
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'firebase_uid' => $user->uid,
+            'name' => $user->displayName,
+            'email' => $user->email,
+            'email_verified_at' => null,
+            'remember_token' => null,
+            'popularity' => 0,
         ];
     }
 
