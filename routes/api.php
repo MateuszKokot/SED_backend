@@ -40,6 +40,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::prefix('firebase')->group(function () {
         Route::get('/userByUID/{uid}', [\App\Http\Controllers\API\FirebaseController::class, 'userByUID']);
     });
+
+    Route::post('/member/create', [\App\Http\Controllers\API\MemberController::class,'store']);
+    Route::delete('/member/delete', [\App\Http\Controllers\API\MemberController::class,'destroy']);
+
 });
 
 
