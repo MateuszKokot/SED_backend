@@ -34,7 +34,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::prefix('attend')->group(function () {
         Route::get('/user/{user_id}', [\App\Http\Controllers\API\AttendController::class, 'whereIAttend']);
     });
-    Route::get('/showResults', [\App\Http\Controllers\API\ShowResultsController::class, 'whereIAttend']);
+    Route::get('/showResults', \App\Http\Controllers\API\ShowResultsController::class);
 
     // Grupa routingów do zabawy z Firebase
     Route::prefix('firebase')->group(function () {
