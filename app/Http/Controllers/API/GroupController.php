@@ -39,8 +39,8 @@ class GroupController extends Controller
         $newGroup->description = $request->description;
         $newGroup->latitude = $request->latitude;
         $newGroup->longitude = $request->longitude;
-        $newGroup->date = $request->date;
-        $newGroup->time = $request->time;
+        $newGroup->event_date = $request->event_date;
+        $newGroup->event_time = $request->event_time;
         $newGroup->max_members = $request->max_members;
         $newGroup->owner = $request->owner;
         $newGroup->popularity = 0;
@@ -90,14 +90,14 @@ class GroupController extends Controller
         foreach ($tags as $tag) {
             $keyword[] = KeyWord::where('id', $tag->keyword_id)->value('keyword');
         }
-        $content['keywords'] = $keyword;
+        $content['group'][0]['keywords'] = $keyword;
 
         //Pobieranie memberów grupy
         $members = Member::where('group_id', $id)->get();
         foreach ($members as $member){
             $membersForContent[] = User::where('id', $member->user_id)->get()[0];
         }
-        $content['members'] = $membersForContent;
+        $content['group'][0]['members'] = $membersForContent;
 
         return response($content);
     }
@@ -130,7 +130,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-
+        // TODO dodaj zabezpieczneie żeby tylko owner mógł usunąć grupe
         Member::where('group_id', $id)->delete();
         Tag::where('group_id', $id)->delete();
         $deleted = Group::where('id', $id)->delete();

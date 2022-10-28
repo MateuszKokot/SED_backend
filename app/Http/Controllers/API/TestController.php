@@ -33,10 +33,6 @@ class TestController extends Controller
             $content = $mytime->toDateTimeString() . " - Nie ma hedera";
         }
 
-        Word::where('id', 1)
-            ->update(['updated_at' => "1111-11-11 11:11:11"]);
-
-
         return response($content);
     }
 }

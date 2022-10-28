@@ -13,9 +13,8 @@ class MemberController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() // GET
     {
         //
     }
@@ -24,9 +23,8 @@ class MemberController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) //POST
     {
         $user_id = $request->user_id;
         $group_id = $request->group_id;
@@ -53,9 +51,8 @@ class MemberController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id) //GET/{ID}
     {
         //
     }
@@ -65,9 +62,8 @@ class MemberController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) //PATCH/{id}
     {
         //
     }
