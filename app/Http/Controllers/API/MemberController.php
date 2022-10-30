@@ -24,18 +24,19 @@ class MemberController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function store(Request $request) //POST
+    public function store(Request $request)
     {
-        $user_id = $request->user_id;
-        $group_id = $request->group_id;
-        if(Group::where('id',$group_id)->count()==0){
+        $user_email = $request->email;
+        $firebase_id = $request->firebase_chat_id;
+        if(Group::where('firebase_chat_id',$firebase_id)->count()==0){
             return response("Podana grupa nie istnieje");
         }
-        if(User::where('id',$user_id)->count()==0){
+        if(User::where('email',$user_email)->count()==0){
             return response("Podany użytkownik nie istnieje");
         }
-        $count=Member::where('user_id',$user_id)->where('group_id',$group_id)->count();
-        if($count==0){
+        $group_id= Group::where('firebase_chat_id',$firebase_id)->value('id');
+        $user_id = User::where('email', $user_email)->value('id');;
+        if((Member::where('user_id',$user_id)->where('group_id',$group_id)->count())==0){
             $newMember = new Member;
             $newMember->user_id = $user_id;
             $newMember->group_id = $group_id;
@@ -76,8 +77,10 @@ class MemberController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user_id=$request->user_id;
-        $group_id=$request->group_id;
+        $user_email = $request->email;
+        $firebase_id = $request->firebase_chat_id;
+        $group_id= Group::where('firebase_chat_id',$firebase_id)->value('id');
+        $user_id = User::where('email', $user_email)->value('id');;
         if(Member::where('user_id',$user_id)->where('group_id',$group_id)->count()==0){
             return response("Dany rekord nie istnieje!");
         }else{
