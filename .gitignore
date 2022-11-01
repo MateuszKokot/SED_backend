@@ -15,4 +15,4 @@ yarn-error.log
 /.idea
 /.vscode
 /zz*
-firebase_credentials.json
+firebase_credentials*
