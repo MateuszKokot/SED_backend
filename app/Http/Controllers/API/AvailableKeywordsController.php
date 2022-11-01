@@ -1,34 +1,27 @@
 <?php
 
-namespace Database\Factories;
+namespace App\Http\Controllers\API;
 
-use App\Models\Group;
-use App\Models\Member;
-use App\Models\User;
-use Google\Cloud\Firestore\FirestoreClient;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Http\Controllers\Controller;
+use App\Models\KeyWord;
+use App\Models\Word;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Group>
- */
-class GroupFactory extends Factory
+class AvailableKeywordsController extends Controller
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
-    {
-        // Pola konfiguracyjne
-        $max_members = 20;
-        $min_latitude = 52.46180594732916;
-        $max_latitude = 52.358204595367255;
-        $min_longitude = 16.814250956019137;
-        $max_longitude = 17.007438887674738;
-        $start_date = 1672531200; // Epoch timestamp / 2023 01:00:00 GMT+01:00
-        $end_date = 1680220800; // Epoch timestamp / 31 marca 2023 02:00:00 GMT+02:00
-        $available_keywords = $result = [
+    public function availableKeywords(){
+
+        // KOD DO POBIERANIA KEYWORDS I ID Z LISTY SŁÓW WRZUCONYCH DO TABLICY $LISTS. DŁUGO SIĘ WYKONUJE
+//        $lists = ["Czytanie","Fotografia","Gry","komputerowe","instrumencie","Kolorowanki","Oglądanie","seriali","filmów","Pisanie","listów","Słuchanie","muzyki","podcastów","audiobooków","Spacerowanie","Śpiewanie","Gotowanie","Hodowla","pszczół","Makijaż","Parzenie","kawy","herbaty","Pieczenie","Pielęgnacja","skóry","ciała","Reperowanie","przeróbki","renowacje","Robienie","piwa","nalewek","wina","przetworów","Sprzątanie","Upcycling","Uprawa","ogrodu","roślin","domowych","Zdrowe","odżywianie","Zielarstwo","Bieganie","Gimnastyka","artystyczna","golfa","Jazda","konna","kółkach","Kręgle","Lekkie","ćwiczenia","rozciąganie","Odbijanie","piłek","paletkami","Sporty","siłowniane","Sporty","walki","wodne","zespołowe","zimowe","sport","Strzelanie","łuku","Sztuki","walki","Taniec","Wędkarstwo","Carving","Ceramika","Decoupage","Dekoracja","ciast","Dzierganie","Farbowanie","malowanie","tkanin","ubrań","Filcowanie","Florystyka","układanie","bukietów","puzli","puzle","Haftowanie","Kaligrafia","Lepienie","masy","solnej","plasteliny","modeliny","Makrama","Malowanie","Origami","kirigami","Patchwork","Majsterkowanie","Modelarstwo","tworzenie","makiet","Robienie","własnych","kosmetyków","świec","Robienie","kolaży","Robienie","masy","papierowej","Robienie","naklejek","szkło","notesów","witraży","Rysowanie","Rzeźbiarstwo","Stemplowanie","Szycie","Szydełkowanie","Tkanie","Tworzenie","biżuterii","Wikliniarstwo","wyplatanie","Aktorstwo","","Grafiki","komputerowe","animacja","modelowanie","Blogowanie","Kręcenie","montaż","filmów","Miksowanie","muzyki","Pisanie","wierszy","książek","Programowanie","Postprodukcja","zdjęć","fotomontaż","Projektowanie","ubrań","dodatków","wnętrz","Gra","bilard","snookera","szachy","warcaby","karty","planszówki","Nauka","języka","Puzzle","Rozwiązywanie","krzyżówek","Astronomia","Chodzenie","giełdy","staroci","pchle","targi","second","handów","koncerty","escape","roomów","miejskie","podchody","Inwestowanie","Oglądanie","meczów","sportowych","Pomoc","Smakowanie","dań","win","herbat","czekolady","Zwiedzanie","odkrywanie","opuszczonych","miejsc","Rekonstrukcje","historyczne","Biwakowanie","wyjazdy","surwiwalowe","Geocatching","Górskie","wędrówki","Obserwowanie","dzikiej","przyrody","Paintball","Poszukiwanie","skarbów","wykrywaczem","metali","Podróżowanie","Loty","tunelu","aerodynamicznym","Skoki","skok","bungee","spadochronie","Wspinaczka","wysokogórska","Genealogia","rzutki"];
+//        foreach ($lists as $item){
+//            set_time_limit(60);
+//            $word = Word::where('word', $item)->first();
+//            if ($word!=null){
+//                $keyword = KeyWord::where('id', $word->keyword_id)->first();
+//                $returnTab[$keyword->keyword] = $keyword->id;
+//            }
+//        }
+
+        $result = [
             "czytać"=> 30961,
             "fotografia"=> 50514,
             "gra"=> 57083,
@@ -222,88 +215,6 @@ class GroupFactory extends Factory
             "rzutek"=> 171454
         ];
 
-
-
-        // Generuje ID dla nowej grupy
-        $last_group_id = Group::orderByDesc('id')->first()->id;
-        $new_group_id = $last_group_id + 1;
-
-
-        // Pobieram listę wszystkich userów
-        $users = User::all();
-
-        // Tworzę nową grupę w FIRESTORE
-            //pobieram obiekt firestore
-        $firestore = new FirestoreClient([
-            'projectId' => 'szukam-ekipy-do',
-//            'projectId' => 'szukamekipy-d023f',
-        ]);
-            //pobieram kolekcje
-        $collection = $firestore->collection('groups');
-            //dodaje nowy dokument/grupę
-        $newUser = $collection->add([
-            'members' => [1,3,5],
-            'name' => 'TestowaMati',
-            'owner' => 'email@email.com'
-        ]);
-            //pobieram firebase czat id utworzonej grupy
-        $firebaseChatID = $newUser->id();
-
-        // Losuje memberów
-        $members[] = array_rand($users->toArray(), rand(1,$max_members) );
-
-        // Zapisuje realcje member (user <-> grupa) w bazie danych
-        foreach ($members as $member) {
-            $newMember = new Member;
-            $newMember->user_id = $member;
-            $newMember->group_id = $new_group_id;
-            $newMember->save();
-        }
-
-        // Losuje ownera
-        $owner = array_rand($members, 1);
-
-        // Generuje opis
-        $description = fake()->text($maxNbChars = 500);
-
-        // Generuje nazwę grupy z udziałem losowej ilości keywords
-        $name = array_rand($available_keywords, rand(1,6)) . fake()->sentence($nbWords = 6, $variableNbWords = true);
-
-        // Losuję latitude i longitude
-        $decimals = 14; // number of decimal places
-        $div = pow(10, $decimals);
-
-        // Syntax: mt_rand(min, max);
-        $latiude = mt_rand(0.01 * $min_latitude , 0.05 * $max_latitude) / $div;
-        $longitude = mt_rand(0.01 * $min_longitude, 0.05 * $max_longitude) / $div;
-
-        //Losuję datę
-        $new_date = mt_rand($start_date, $end_date);
-        $event_date = date("Y-m-d H:i:s",$new_date);
-
-        // Losuje godzinę
-        // 9 do 21 zrobie to mt randem i sklejaniem
-        $event_time = '15:00';
-
-
-
-        //TODO event time date powinno być w wąskim zakresie dat, żeby przeszukiwanie było możliwe/ NAjlepiej daty inżynierki tj styczeń marzec 2023
-
-
-
-        return [
-            'id' => $new_group_id,
-            'firebase_chat_id' => $firebaseChatID,
-            'name' => $name,
-            'description' => $description,
-            'latitude' => $latiude,
-            'longitude' => $longitude,
-            'event_date' => $event_date,
-            'event_time' => $event_time,
-            'max_members' => $max_members,
-            'owner' => $owner,
-            'popularity' => 0,
-
-        ];
+        return $result;
     }
 }

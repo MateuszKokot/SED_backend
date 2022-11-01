@@ -42,7 +42,8 @@ class GroupController extends Controller
         $newGroup->event_date = $request->event_date;
         $newGroup->event_time = $request->event_time;
         $newGroup->max_members = $request->max_members;
-        $newGroup->owner = $request->owner;
+        $userOwner = User::where('email',$request->owner)->get();
+        $newGroup->owner = $userOwner[0]->id;
         $newGroup->popularity = 0;
         $newGroup->save();
 
@@ -51,11 +52,11 @@ class GroupController extends Controller
         foreach ($members as $member){
             $newMembers = new Member();
             $newMembers->group_id = $newGroup->id;
-            $newMembers->user_id = $member;
-            $membersForContent[] = User::where('id',$member)->get()[0];
+            $userMember = User::where('email',$member)->get('id');
+            $newMembers->user_id = $userMember[0]->id;
+            $membersForContent[] = User::where('id',$userMember[0]->id)->get()[0];
             $newMembers->save();
         }
-
 
         // Tworzenie tagów grupy
         $tags = $request->tags;
